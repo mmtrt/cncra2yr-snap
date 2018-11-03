@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="snap/gui/cncra.png" alt="C&C: Red Alert 2 Yuri's Revenge">
+  <img src="snap/gui/cncra2yr.png" alt="C&C: Red Alert 2 Yuri's Revenge">
   <br />
   C&C: Red Alert 2 Yuri's Revenge
 </h1>
