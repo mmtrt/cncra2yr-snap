@@ -8,5 +8,5 @@ Icon=${SNAP}/meta/gui/cncra2yr.png
 Categories=Game;
 Terminal=false
 StartupNotify=true
-StartupWMClass=clientxna.exe
+StartupWMClass=clientxna.exe,game.exe,gamemd-spawn.exe
 Keywords=game

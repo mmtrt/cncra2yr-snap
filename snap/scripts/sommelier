@@ -44,10 +44,12 @@ function find_game() {
   WINE_DIR=$(dirname "${WINE_EXE}")
 }
 
+if [ ! -f ${WINEPREFIX}/drive_c/Westwood/RA2/ra2.mix ]; then
     # create gamedir
     mkdir -p "${WINEPREFIX}/drive_c/Westwood/RA2/"
     # open gamedir
     xdg-open "${WINEPREFIX}/drive_c/Westwood/RA2/"
+fi
 
     # Downloads a file with progress using wget and yad
 function install_cnc() {
@@ -313,9 +315,11 @@ if [ ! -f "${WINEPREFIX}/drive_c/windows/win.ini" ]; then
   # Create wine cache dir
   mkdir -p ${XDG_CACHE_HOME}/wine
   # Download Wine Mono to cache
-  wget "${MONO_URL}" -O "${XDG_CACHE_HOME}/wine/${MONO_MSI}" 2>&1 | \
-  perl -p -e '$| = 1; s/^.* +([0-9]+%) +([0-9,.]+[GMKB]) +([0-9hms,.]+).*$/\1\n# Downloading... \2 (\3)/' | \
-  yad --progress --title="${MONO_MSI}" --width=400 --center --no-buttons --auto-close --auto-kill --on-top --no-escape
+  if [ ! -f "${XDG_CACHE_HOME}/wine/${MONO_MSI}" ]; then
+   wget "${MONO_URL}" -O "${XDG_CACHE_HOME}/wine/${MONO_MSI}" 2>&1 | \
+   perl -p -e '$| = 1; s/^.* +([0-9]+%) +([0-9,.]+[GMKB]) +([0-9hms,.]+).*$/\1\n# Downloading... \2 (\3)/' | \
+   yad --progress --title="${MONO_MSI}" --width=400 --center --no-buttons --auto-close --auto-kill --on-top --no-escape
+  fi
   # Create the WINE environment
   env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" wineboot --init 2>&1 | \
   yad --progress --title="Preparing Windows environment" --width=400 --center --no-buttons --auto-close --auto-kill --on-top --pulsate
