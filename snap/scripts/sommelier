@@ -7,9 +7,11 @@ REL=stable
 # wine base
 WINE_BASE=wine-$REL
 
-if [ ! -d $WP/usr ] ; then
+if [ ! -f $WP/$WINE_BASE/bin/wine64 ] ; then
   echo "You need to connect this snap to the wine-platform snap."
   echo ""
+  echo "snap disconnect $SNAP_NAME:wine-platform-plug"
+  echo "snap install wine-platform"
   echo "snap connect $SNAP_NAME:wine-platform-plug wine-platform:wine-base-$REL"
   exit 1
 fi
