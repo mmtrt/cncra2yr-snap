@@ -181,6 +181,7 @@ export XKB_CONFIG_ROOT=$WP/usr/share/X11/xkb
 # Give XOpenIM a chance to locate locale data.
 # This is required for text input to work in SDL2 games.
 export XLOCALEDIR=$WP/usr/share/X11/locale
+export LOCPATH=$WP/usr/lib/locale
 
 # Set XCursors path
 export XCURSOR_PATH=$WP/usr/share/icons
