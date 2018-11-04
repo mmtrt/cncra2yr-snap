@@ -170,11 +170,13 @@ export WINEPREFIX="$SNAP_USER_COMMON/.wine"
 export WINEDEBUG=-all
 export LD_LIBRARY_PATH="$WP/lib:$WP/lib/$ARCH:$WP/usr/lib:$WP/usr/lib/$ARCH:$LD_LIBRARY_PATH"
 export PATH=$PATH:$WP/bin:$WP/usr/bin:$WP/$WINE_BASE/bin
+
 if [ "$SNAP_ARCH" = "amd64" ]; then
   append_dir LD_LIBRARY_PATH $WP/lib64
   append_dir LD_LIBRARY_PATH $WP/lib/i386-linux-gnu
   append_dir LD_LIBRARY_PATH $WP/usr/lib/i386-linux-gnu
 fi
+
 # XKB config
 export XKB_CONFIG_ROOT=$WP/usr/share/X11/xkb
 
