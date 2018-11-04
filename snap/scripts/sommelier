@@ -305,6 +305,12 @@ if [ -f $WP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ] && [ ! -f "$
   $WP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
 fi
 
+if [ ! -d $WINEPREFIX ]; then
+# link ttf & ttc fonts from root to wineprefix
+mkdir -p $WINEPREFIX/drive_c/windows/Fonts
+find /usr/share/fonts/ -type f \( -name "*.ttf" -o -name "*.ttc" \) -exec ln -vs "{}" $WINEPREFIX/drive_c/windows/Fonts/ \; &>/dev/null
+fi
+
 # Stop wine from updating $WINEPREFIX automatically
 if [ -f "${WINEPREFIX}/.update-timestamp" ]; then
   chkstmp=$(grep disable "${WINEPREFIX}/.update-timestamp" | wc -l)
