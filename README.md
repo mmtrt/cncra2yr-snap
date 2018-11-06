@@ -22,6 +22,8 @@ distributions.</p>
 ## Info
  * This snap does not have game files.
  * Game updater is broken in wine you have copy files from `$HOME/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2/Updater` to `$HOME/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2` when all files are downloaded.
+ * Alt + Tab ingame is broken.
+ * Ingame screen scrolling is laggy on Intel, Ati/Amd not tested.
  * Auto restart of client is broken when user saves settings so don't click yes to restart do manually exit then start game again.
  * `wine-platform-i386` conflicts with `wine-platform` when it is already installed if this snap connects to `wine-platform-i386` you have to disconnect it `snap disconnect cncra2yr:wine-platform-plug` and then reconnect to `wine-platform` with `snap connect cncra2yr:wine-platform-plug wine-platform:wine-base-stable`
 
