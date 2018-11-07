@@ -31,6 +31,8 @@ fi
 
 # Set $REALHOME to the users real home directory
 REALHOME=`getent passwd $UID | cut -d ':' -f 6`
+# gamedir
+GAMEDIR="${WINEPREFIX}/drive_c/Westwood/RA2"
 
 function install_app() {
   # Install additional requirements via winetricks here
@@ -46,11 +48,11 @@ function find_game() {
   WINE_DIR=$(dirname "${WINE_EXE}")
 }
 
-if [ ! -f ${WINEPREFIX}/drive_c/Westwood/RA2/ra2.mix ]; then
+if [ ! -f $GAMEDIR/ra2.mix ]; then
     # create gamedir
-    mkdir -p "${WINEPREFIX}/drive_c/Westwood/RA2/"
+    mkdir -p $GAMEDIR
     # open gamedir
-    xdg-open "${WINEPREFIX}/drive_c/Westwood/RA2/"
+    xdg-open $GAMEDIR
 fi
 
     # Downloads a file with progress using wget and yad
@@ -77,7 +79,15 @@ function install_cnc() {
       --center \
       --width=400 \
       --button="Install:0" --button="Exit:1" \
-      --text "copy your RA2|YR game files to the opened directory then press Install:" \
+      --text "Copy the following RA2|YR game files to $GAMEDIR then press Install:
+
+ > BINKW32.dll
+ > BLOWFISH.dll
+ > ra2.mix
+ > ra2md.mix
+ > language.mix
+ > langmd.mix
+      " \
       --entry "Multiplayer")
   ret=$?
 
