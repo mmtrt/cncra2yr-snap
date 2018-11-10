@@ -107,6 +107,11 @@ function launch_app() {
   # If we don't change into the program directory some assets may not be found
   cd "${WINE_DIR}"
 
+  # Copy over game update files
+  if [ -d ${GAMEDIR}/Updater ]; then
+    cp -r "${GAMEDIR}/Updater/"* ${GAMEDIR}
+  fi
+
   # Only use virtual desktop if it has been requested and we're running Xorg
   if [ "${XDG_SESSION_TYPE}" == "x11" ] && [ "${VIRTDESKTOP}" == "1" ]; then
     # Get the native resolution of the primary display.
