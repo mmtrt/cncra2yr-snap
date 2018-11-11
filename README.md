@@ -12,8 +12,6 @@ distributions.</p>
 ## Install
 
     snap install cncra2yr
-    snap install wine-platform
-    snap connect cncra2yr:wine-platform-plug wine-platform:wine-base-stable
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
@@ -21,12 +19,9 @@ distributions.</p>
 
 ## Info
  * This snap does not have game files.
- * Game updater is broken in wine you have copy files from `$HOME/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2/Updater` to `$HOME/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2` when all files are downloaded.
- * Alt + Tab ingame is broken.
- * Ingame mouse scrolling is laggy.
+ * Game updater is broken in wine though when launcher closes after update download to install it, click ok to error then run the game as usuall it will be updated because I've added workaround this issue now updates will be copied over when `Updater` dir exists.
+ * Select Renderer `Automatic` from launcher options that is needed in `WINE` for smooth gameplay.
  * Auto restart of client is broken when user saves settings so don't click yes to restart do manually exit then start game again.
- * `wine-platform-i386` conflicts with `wine-platform` when it is already installed if this snap connects to `wine-platform-i386` you have to disconnect it `snap disconnect cncra2yr:wine-platform-plug` and then reconnect to `wine-platform` with `snap connect cncra2yr:wine-platform-plug wine-platform:wine-base-stable`
-
 
 ## Requirements
  * Original game files of `Red Alert 2 Yuri's Revenge`.
