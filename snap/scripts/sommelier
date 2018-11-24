@@ -358,6 +358,8 @@ cat > $progReg <<'EOF'
 Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\Software\Wine\AppDefaults\gamemd-spawn.exe\DllOverrides]
 "ddraw"="native,builtin"
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"winemenubuilder.exe"=""
 EOF
   # Create the WINE environment
   env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" wineboot --init 2>&1 | \
