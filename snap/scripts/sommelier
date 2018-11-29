@@ -124,7 +124,7 @@ function launch_app() {
     NATIVE_RES=$(xrandr -q | grep primary | cut -d' ' -f4 | cut -d'+' -f1)
     env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" explorer /desktop="virtual","${NATIVE_RES}" "${WINE_EXE}"
   else
-    env MONO_IOMAP=all mono --debug "${WINE_EXE}"
+    env MONO_IOMAP=all PATH=$PATH:${HOME}/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2/bin mono --debug "${WINE_EXE}"
   fi
 }
 
