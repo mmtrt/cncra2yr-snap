@@ -48,7 +48,7 @@ function install_app() {
 
 function find_game() {
   # assign game exe path & name via find
-  WINE_EXE="$(find $WINEPREFIX/ -type f -name 'clientxna.exe')"
+  WINE_EXE="$(find $WINEPREFIX/ -type f -name 'clientogl.exe')"
   WINE_DIR=$(dirname "${WINE_EXE}")
 }
 
@@ -124,7 +124,7 @@ function launch_app() {
     NATIVE_RES=$(xrandr -q | grep primary | cut -d' ' -f4 | cut -d'+' -f1)
     env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" explorer /desktop="virtual","${NATIVE_RES}" "${WINE_EXE}"
   else
-    env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${WINE_EXE}"
+    env MONO_IOMAP=all mono --debug "${WINE_EXE}"
   fi
 }
 

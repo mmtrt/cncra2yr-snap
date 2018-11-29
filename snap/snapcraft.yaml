@@ -22,15 +22,18 @@ plugs:
 apps:
   cncra2yr:
     command: |
-      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientxna.exe' 2>/dev/null)"
+      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientogl.exe' 2>/dev/null)"
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
       DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
       INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
       MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
-      TRICKS: "xna40"
+      TRICKS: ""
       VIRTDESKTOP: 0
       LC_ALL: "C.UTF-8"
+      MONO_CFG_DIR: $SNAP/wine-platform/etc
+      MONO_CONFIG: $SNAP/wine-platform/etc/mono/config
+      MONO_GAC_PREFIX: $SNAP/wine-platform/usr/lib/mono
     plugs:
       - wine-platform-plug
       - desktop
@@ -91,3 +94,4 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/wine-platform
     organize:
       'sommelier': bin/
+      'wine-dta.sh': bin/
