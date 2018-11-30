@@ -310,13 +310,6 @@ if [ ! -d $WINEPREFIX ]; then
 # link ttf & ttc fonts from root to wineprefix
 mkdir -p $WINEPREFIX/drive_c/windows/Fonts
 find /usr/share/fonts/ -type f \( -name "*.ttf" -o -name "*.ttc" \) -exec ln -vs "{}" $WINEPREFIX/drive_c/windows/Fonts/ \; &>/dev/null
-mreg="$HOME/.mono/registry/CurrentUser/software/yurisrevenge"
-monoReg="$mreg/values.xml"
-mkdir -p $mreg
-echo "<values>" >> $monoReg
-echo '<value name="InstallPath"' >> $monoReg
-echo "type=\"string\">${WINEPREFIX}/Westwood/RA2\</value>" >> $monoReg
-echo "</values>" >> $monoReg
 fi
 
 # Stop wine from updating $WINEPREFIX automatically
