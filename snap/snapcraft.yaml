@@ -84,7 +84,7 @@ apps:
 parts:
   cncra2yr:
     plugin: dump
-    source: snap/scripts
+    source: scripts
     override-build: |
       snapcraftctl build
       set -ex
