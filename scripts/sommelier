@@ -126,7 +126,7 @@ function launch_app() {
     NATIVE_RES=$(xrandr -q | grep primary | cut -d' ' -f4 | cut -d'+' -f1)
     env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" explorer /desktop="virtual","${NATIVE_RES}" "${WINE_EXE}"
   else
-    env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${WINE_EXE}"
+    env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" taskset -c 0 "${WINELOADER}" "${WINE_EXE}"
   fi
 }
 
