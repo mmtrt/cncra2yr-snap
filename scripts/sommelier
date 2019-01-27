@@ -77,7 +77,9 @@ function install_cnc() {
       --center \
       --width=400 \
       --button="Install:0" --button="Exit:1" \
-      --text "Copy the following RA2|YR game files to $GAMEDIR then press Install:
+      --text "Note: This snap does not include the actual game so you have to buy or use your bought copy game files in order play!!
+
+Copy the following RA2|YR game files to $GAMEDIR then press Install:
 
  > BINKW32.dll
  > BLOWFISH.dll
