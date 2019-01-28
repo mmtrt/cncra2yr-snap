@@ -31,6 +31,7 @@ apps:
       MONO_CFG_DIR: $SNAP/wine-platform/etc
       MONO_CONFIG: $SNAP/wine-platform/etc/mono/config
       MONO_GAC_PREFIX: $SNAP/wine-platform/usr/lib/mono
+      MONO_REGISTRY_PATH: $SNAP_USER_COMMON/.mono/registry
     plugs:
       - wine-platform-plug
       - desktop
