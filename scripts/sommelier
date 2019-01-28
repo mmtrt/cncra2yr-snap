@@ -110,7 +110,7 @@ function launch_app() {
     cp -r "${GAMEDIR}/Updater/"* ${GAMEDIR}
   fi
 
-  env MONO_IOMAP=all PATH=$PATH:${HOME}/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2/bin mono --debug "${WINE_EXE}"
+  env MONO_IOMAP=all PATH=$PATH:${HOME}/snap/cncra2yr/common/.wine/drive_c/Westwood/RA2/bin mono "${WINE_EXE}"
 }
 
 function prepend_dir() {
