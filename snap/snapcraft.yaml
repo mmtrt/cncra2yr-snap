@@ -11,6 +11,7 @@ confinement: strict
 architectures:
   - build-on: amd64
     run-on: [amd64, i386]
+base: core18
 
 plugs:
   wine-platform-plug:
