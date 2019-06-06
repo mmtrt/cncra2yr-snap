@@ -14,11 +14,18 @@ architectures:
 base: core18
 
 plugs:
-  wine-platform-plug:
-    content: wine-base-stable
+  wine-runtime:
+    interface: content
+    target: $SNAP/wine-runtime
+    default-provider: wine-platform-runtime
+  wine-3-stable:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform
+    default-provider: wine-platform-3-stable
+  gtk-3-themes:
+    default-provider: gtk-common-themes
+    interface: content
+    target: $SNAP/data-dir/themes
   icon-themes:
     interface: content
     target: $SNAP/data-dir/icons
@@ -37,7 +44,6 @@ apps:
       VIRTDESKTOP: 0
       LC_ALL: "C.UTF-8"
     plugs:
-      - wine-platform-plug
       - desktop
       - desktop-legacy
       - hardware-observe
@@ -50,6 +56,10 @@ apps:
       - pulseaudio
       - wayland
       - x11
+      - gtk-3-themes
+      - icon-themes
+      - wine-runtime
+      - wine-3-stable
   wineboot:
     command: bin/sommelier $SNAP/wine-platform/wine-stable/bin/wineboot
     environment:
@@ -73,7 +83,7 @@ apps:
       - wayland
       - x11
   winetricks:
-    command: bin/sommelier $SNAP/wine-platform/bin/winetricks prefix="$WINEPREFIX"
+    command: bin/sommelier $SNAP/wine-runtime/bin/winetricks prefix="$WINEPREFIX"
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
       DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
@@ -89,10 +99,11 @@ apps:
 parts:
   cncra2yr:
     plugin: dump
-    source: scripts
+    source: ./snap/local/scripts
     override-build: |
       snapcraftctl build
       set -ex
+      mkdir -p $SNAPCRAFT_PART_INSTALL/wine-runtime
       mkdir -p $SNAPCRAFT_PART_INSTALL/wine-platform
     organize:
       'sommelier': bin/
