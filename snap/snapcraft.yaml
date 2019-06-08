@@ -37,7 +37,7 @@ apps:
       bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientxna.exe' 2>/dev/null)"
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
+      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
       INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
       MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
       TRICKS: "xna40"
@@ -64,7 +64,7 @@ apps:
     command: bin/sommelier $SNAP/wine-platform/wine-stable/bin/wineboot
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
+      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
     plugs:
       - desktop
       - desktop-legacy
@@ -75,7 +75,7 @@ apps:
     command: bin/sommelier $SNAP/wine-platform/wine-stable/bin/winecfg
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
+      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
     plugs:
       - desktop
       - desktop-legacy
@@ -86,7 +86,7 @@ apps:
     command: bin/sommelier $SNAP/wine-runtime/bin/winetricks prefix="$WINEPREFIX"
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=;winemenubuilder.exe=d" # Prevent pop-ups about Wine Gecko
+      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
       LC_ALL: "C.UTF-8"
     plugs:
       - desktop
