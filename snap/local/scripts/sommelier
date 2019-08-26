@@ -99,7 +99,7 @@ function install_app() {
 
 function find_game() {
   # assign game exe path & name via find
-  WINE_EXE="$(find $WINEPREFIX/ -type f -name 'clientxna.exe')"
+  WINE_EXE="$(find $WINEPREFIX/ -type f -name 'clientxna.exe' | head -1)"
   WINE_DIR=$(dirname "${WINE_EXE}")
 }
 

@@ -34,7 +34,7 @@ plugs:
 apps:
   cncra2yr:
     command: |
-      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientxna.exe' 2>/dev/null)"
+      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientxna.exe' 2>/dev/null | head -1)"
     environment:
       WINEPREFIX: "$SNAP_USER_COMMON/.wine"
       DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
