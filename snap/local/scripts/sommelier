@@ -164,9 +164,9 @@ function launch_app() {
   # If we don't change into the program directory some assets may not be found
   cd "${WINE_DIR}"
 
-  # Copy over game update files
+  # Copy over game update files & remove dir
   if [ -d ${GAMEDIR}/Updater ]; then
-    cp -r "${GAMEDIR}/Updater/"* ${GAMEDIR}
+    cp -r "${GAMEDIR}/Updater/"* ${GAMEDIR} && rm -rf "${GAMEDIR}/Updater"
   fi
 
   # Only use virtual desktop if it has been requested and we're running Xorg
