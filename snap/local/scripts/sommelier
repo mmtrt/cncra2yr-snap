@@ -216,6 +216,30 @@ if [ -n "${MONO_URL}" ]; then
   MONO_MSI=$(basename "${MONO_URL}")
 fi
 
+# async
+declare -A PIDS
+
+function async_exec() {
+  $@ &
+  PIDS[$!]=$@
+}
+
+function wait_for_async_execs() {
+  for i in ${!PIDS[@]}
+  do
+    wait $i && continue || echo "ERROR: ${PIDS[$i]} exited abnormally with status $?"
+  done
+}
+
+# ensure_dir_exists calls `mkdir -p` if the given path is not a directory.
+# This speeds up execution time by avoiding unnecessary calls to mkdir.
+#
+# Usage: ensure_dir_exists <path> [<mkdir-options>]...
+#
+function ensure_dir_exists() {
+  [ -d "$1" ] ||  mkdir -p "$@"
+}
+
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP
 SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
@@ -275,10 +299,12 @@ append_dir LD_LIBRARY_PATH $WPR/usr/lib/$ARCH/mesa-egl
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/mesa
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/mesa-egl
 
-# Tell libGL where to find the drivers
+# Tell libGL and libva where to find the drivers
 export LIBGL_DRIVERS_PATH=$WPR/usr/lib/$ARCH/dri
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LIBGL_DRIVERS_PATH $WPR/usr/lib/i386-linux-gnu/dri
 append_dir LD_LIBRARY_PATH $LIBGL_DRIVERS_PATH
+export LIBVA_DRIVERS_PATH=$WPR/usr/lib/$ARCH/dri
+[ "$SNAP_ARCH" = "amd64" ] && append_dir LIBVA_DRIVERS_PATH $WPR/usr/lib/i386-linux-gnu/dri
 
 # Workaround in snapd for proprietary nVidia drivers mounts the drivers in
 # /var/lib/snapd/lib/gl that needs to be in LD_LIBRARY_PATH
@@ -289,6 +315,9 @@ append_dir LD_LIBRARY_PATH /var/lib/snapd/lib/gl
 # Pulseaudio export
 append_dir LD_LIBRARY_PATH $WPR/usr/lib/$ARCH/pulseaudio
 [ "$SNAP_ARCH" = "amd64" ] && append_dir LD_LIBRARY_PATH $WPR/usr/lib/i386-linux-gnu/pulseaudio
+
+# Alsa export
+export ALSA_CONFIG_PATH="$WPR/usr/share/alsa/alsa.conf"
 
 # EGL vendor files on glvnd enabled systems
 [ -d /var/lib/snapd/lib/glvnd/egl_vendor.d ] && \
@@ -313,7 +342,7 @@ export HOME=$SNAP_USER_COMMON
 
 # Set XDG_DATA_HOME to local path
 export XDG_DATA_HOME=$SNAP_USER_COMMON/.local/share
-mkdir -p $XDG_DATA_HOME
+ensure_dir_exists $XDG_DATA_HOME
 
 # Workaround for GLib < 2.53.2 not searching for schemas in $XDG_DATA_HOME:
 #   https://bugzilla.gnome.org/show_bug.cgi?id=741335
@@ -321,14 +350,14 @@ prepend_dir XDG_DATA_DIRS $XDG_DATA_HOME
 
 # Set cache folder to local path
 export XDG_CACHE_HOME=$SNAP_USER_COMMON/.cache
-mkdir -p $XDG_CACHE_HOME
+ensure_dir_exists $XDG_CACHE_HOME
 
 # Set config folder to local path
 export XDG_CONFIG_HOME=$SNAP_USER_COMMON/.config
-mkdir -p $XDG_CONFIG_HOME
+ensure_dir_exists $XDG_CONFIG_HOME
 
 # Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
-[ -n "$XDG_RUNTIME_DIR" ] && mkdir -p $XDG_RUNTIME_DIR -m 700
+[ -n "$XDG_RUNTIME_DIR" ] && ensure_dir_exists $XDG_RUNTIME_DIR -m 700
 
 # Make PulseAudio socket available inside the snap-specific $XDG_RUNTIME_DIR
 if [ -n "$XDG_RUNTIME_DIR" ]; then
@@ -376,8 +405,8 @@ if [ $needs_update = true ]; then
   # This fontconfig fragment is installed in a location that is
   # included by the system fontconfig configuration: namely the
   # etc/fonts/conf.d/50-user.conf file.
-  mkdir -p $XDG_CONFIG_HOME/fontconfig
-  make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
+  ensure_dir_exists $XDG_CONFIG_HOME/fontconfig
+  async_exec make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
 
   # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
   # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
@@ -397,7 +426,7 @@ if [ $needs_update = true ]; then
   if [ ! -f $WPR/usr/share/mime/mime.cache ]; then
     if command -v update-mime-database >/dev/null; then
       cp --preserve=timestamps -dR $WPR/usr/share/mime $XDG_DATA_HOME
-      update-mime-database $XDG_DATA_HOME/mime
+      async_exec update-mime-database $XDG_DATA_HOME/mime
     fi
   fi
 fi
@@ -405,8 +434,11 @@ fi
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
 export GDK_PIXBUF_MODULEDIR=$WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
-if [ -f $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ] && [ ! -f "${GDK_PIXBUF_MODULE_FILE}" ]; then
-  $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+if [ $needs_update = true ]; then
+  rm -f $GDK_PIXBUF_MODULE_FILE
+  if [ -f $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ] && [ ! -f "${GDK_PIXBUF_MODULE_FILE}" ]; then
+    async_exec $WPR/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  fi
 fi
 
 # GTK theme and behavior modifier
@@ -415,14 +447,14 @@ gtk_configs=(gtk-3.0/settings.ini gtk-3.0/bookmarks gtk-2.0/gtkfilechooser.ini)
 for f in ${gtk_configs[@]}; do
   dest="$XDG_CONFIG_HOME/$f"
   if [ ! -L "$dest" ]; then
-    mkdir -p `dirname $dest`
+    ensure_dir_exists `dirname $dest`
     ln -s $REALHOME/.config/$f $dest
   fi
 done
 
 if [ ! -d $WINEPREFIX ]; then
 # link ttf & ttc fonts from root to wineprefix
-mkdir -p $WINEPREFIX/drive_c/windows/Fonts
+ensure_dir_exists $WINEPREFIX/drive_c/windows/Fonts
 find /usr/share/fonts/ -type f \( -name "*.ttf" -o -name "*.ttc" \) -exec ln -vs "{}" $WINEPREFIX/drive_c/windows/Fonts/ \; &>/dev/null
 fi
 
@@ -437,7 +469,7 @@ fi
 # Initialise wine
 if [ ! -f "${WINEPREFIX}/drive_c/windows/win.ini" ]; then
   # Create wine cache dir
-  mkdir -p ${XDG_CACHE_HOME}/wine
+  ensure_dir_exists ${XDG_CACHE_HOME}/wine
   # Download Wine Mono to cache
   if [ ! -f "${XDG_CACHE_HOME}/wine/${MONO_MSI}" ]; then
    wget "${MONO_URL}" -O "${XDG_CACHE_HOME}/wine/${MONO_MSI}" 2>&1 | \
@@ -458,7 +490,7 @@ EOF
   env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" start regedit ${progReg}
   # Opt out of winetricks metrics - we ninja this to avoid dialogs
   if [ ! -f "${XDG_CACHE_HOME}/winetricks/track_usage" ]; then
-    mkdir -p "${XDG_CACHE_HOME}/winetricks"
+    ensure_dir_exists "${XDG_CACHE_HOME}/winetricks"
     echo 0 > "${XDG_CACHE_HOME}/winetricks/track_usage"
   fi
 else
@@ -467,6 +499,8 @@ else
 fi
 
 [ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > $SNAP_USER_DATA/.last_revision
+
+wait_for_async_execs
 
 # Launch wineboot/winecfg/winetricks if requested.
 # If the executable exists then launch it otherwise install it then lauch it.
