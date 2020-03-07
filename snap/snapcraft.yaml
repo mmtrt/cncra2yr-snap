@@ -40,7 +40,7 @@ apps:
       DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
       INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
       MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
-      TRICKS: "xna40"
+      TRICKS: "xna40 dotnet45"
       VIRTDESKTOP: 0
       LC_ALL: "C.UTF-8"
     plugs:
