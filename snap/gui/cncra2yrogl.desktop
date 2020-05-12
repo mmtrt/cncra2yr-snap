@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=C&C: Red Alert 2 Yuri's Revenge (OpenGL)
+Comment=
+Exec=cncra2yr.cncra2yrogl
+Icon=${SNAP}/meta/gui/cncra2yr.png
+Categories=Game;
+Terminal=false
+StartupNotify=true
+StartupWMClass=clientogl.exe,game.exe,gamemd-spawn.exe
+Keywords=game
