@@ -84,13 +84,3 @@ parts:
     plugin: make
     source: https://github.com/snapcrafters/sommelier-core.git
     source-branch: "1.0"
-
-  fixup-lib:
-    after: [gnome-3-28-extension]
-    plugin: nil
-    override-build: |
-      ARCHITECTURE=$(dpkg --print-architecture)
-      if [ "${ARCHITECTURE}" = "amd64" ]; then
-        mkdir -p $SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu
-        mv ../../gnome-3-28-extension/install/lib/*.so $SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu
-      fi
