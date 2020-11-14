@@ -71,9 +71,11 @@ parts:
   cncra2yr:
     plugin: nil
     source: ./snap/local/src
+    override-build: |
+      snapcraftctl build
+      set -ex
+      mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; cp -R -p sommelier $SNAPCRAFT_PART_INSTALL
     stage:
-      - wine-platform
-      - wine-runtime
       - sommelier
     organize:
       'pre-install': sommelier/hooks/
