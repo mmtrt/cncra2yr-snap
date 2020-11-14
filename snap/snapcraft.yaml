@@ -74,6 +74,7 @@ parts:
     stage:
       - wine-platform
       - wine-runtime
+      - sommelier
     organize:
       'pre-install': sommelier/hooks/
 
