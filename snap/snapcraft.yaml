@@ -1,4 +1,5 @@
 name: cncra2yr
+title: C&C Red Alert 2 Yuri's Revenge (Wine)
 version: '1.0'
 summary: C&C Red Alert is a real-time strategy game.
 description: |
@@ -18,120 +19,78 @@ plugs:
     interface: content
     target: $SNAP/wine-runtime
     default-provider: wine-platform-runtime
-  wine-3-stable:
+  wine-5-stable:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-3-stable
-  gtk-3-themes:
-    default-provider: gtk-common-themes
-    interface: content
-    target: $SNAP/data-dir/themes
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
+    default-provider: wine-platform-5-stable
+
+environment:
+  WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
+  WINEPREFIX: "$SNAP_USER_COMMON/.wine"
+  INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
+  TRICKS: "xna40 dotnet45"
 
 apps:
   cncra2yr:
-    command: |
-      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientxna.exe' 2>/dev/null | head -1)"
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier run-exe
     environment:
-      WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
-      INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
-      MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
-      TRICKS: "xna40 dotnet45"
-      VIRTDESKTOP: 0
-      LC_ALL: "C.UTF-8"
+      RUN_EXE: "C:/Westwood/RA2/Resources/clientxna.exe"
     plugs:
-      - desktop
-      - desktop-legacy
-      - hardware-observe
       - home
-      - joystick
       - network
       - network-bind
       - opengl
-      - process-control
       - audio-playback
-      - wayland
-      - x11
-      - gtk-3-themes
-      - icon-themes
-      - wine-runtime
-      - wine-3-stable
+
   cncra2yrogl:
-    command: |
-      bin/sommelier "$(find $WINEPREFIX/ -type f -name 'clientogl.exe' 2>/dev/null | head -1)"
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier run-exe
     environment:
-      WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
-      INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
-      MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
-      TRICKS: "xna40 dotnet45"
-      VIRTDESKTOP: 0
-      LC_ALL: "C.UTF-8"
+      RUN_EXE: "C:/Westwood/RA2/Resources/clientogl.exe"
     plugs:
-      - desktop
-      - desktop-legacy
-      - hardware-observe
       - home
-      - joystick
       - network
       - network-bind
       - opengl
-      - process-control
       - audio-playback
-      - wayland
-      - x11
-      - gtk-3-themes
-      - icon-themes
-      - wine-runtime
-      - wine-3-stable
-  wineboot:
-    command: bin/sommelier $SNAP/wine-platform/wine-stable/bin/wineboot
-    environment:
-      WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
+
+  wine:
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier
     plugs:
-      - desktop
-      - desktop-legacy
-      - audio-playback
-      - wayland
-      - x11
-  winecfg:
-    command: bin/sommelier $SNAP/wine-platform/wine-stable/bin/winecfg
-    environment:
-      WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
-    plugs:
-      - desktop
-      - desktop-legacy
-      - audio-playback
-      - wayland
-      - x11
-  winetricks:
-    command: bin/sommelier $SNAP/wine-runtime/bin/winetricks
-    environment:
-      WINEPREFIX: "$SNAP_USER_COMMON/.wine"
-      DLLOVERRIDES: "mshtml=" # Prevent pop-ups about Wine Gecko
-      LC_ALL: "C.UTF-8"
-    plugs:
-      - desktop
-      - desktop-legacy
+      - home
       - network
-      - audio-playback
-      - wayland
-      - x11
+  winetricks:
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier winetricks
+    plugs:
+      - network
 
 parts:
   cncra2yr:
-    plugin: dump
-    source: ./snap/local/scripts
-    override-build: |
-      snapcraftctl build
-      set -ex
-      mkdir -p $SNAPCRAFT_PART_INSTALL/wine-runtime
-      mkdir -p $SNAPCRAFT_PART_INSTALL/wine-platform
+    plugin: nil
+    source: ./snap/local/src
+    stage:
+      - wine-platform
+      - wine-runtime
+      - sommelier
     organize:
-      'sommelier': bin/
+      'pre-install': sommelier/hooks/
+
+  # The sommelier script helps you snap Windows applications using Wine. It 
+  # initializes and configures Wine and installs the Windows application.
+  sommelier:
+    plugin: make
+    source: https://github.com/snapcrafters/sommelier-core.git
+    source-branch: "1.0"
+
+  fixup-lib:
+    after: [gnome-3-28-extension]
+    plugin: nil
+    override-build: |
+      ARCHITECTURE=$(dpkg --print-architecture)
+      if [ "${ARCHITECTURE}" = "amd64" ]; then
+        mkdir -p $SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu
+        mv ../../gnome-3-28-extension/install/lib/*.so $SNAPCRAFT_PART_INSTALL/lib/x86_64-linux-gnu
+      fi
