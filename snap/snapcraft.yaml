@@ -71,6 +71,9 @@ parts:
   cncra2yr:
     plugin: nil
     source: ./snap/local/src
+    stage:
+      - wine-platform
+      - wine-runtime
     organize:
       'pre-install': sommelier/hooks/
 
