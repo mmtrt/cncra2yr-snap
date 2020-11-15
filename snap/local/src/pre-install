@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# create dlloverride reg
-progReg=${TMPDIR}/dlloverrides.reg
-cat > $progReg <<'EOF'
-Windows Registry Editor Version 5.00
-[HKEY_CURRENT_USER\Software\Wine\AppDefaults\gamemd-spawn.exe\DllOverrides]
-"ddraw"="native,builtin"
-EOF
-
-wine regedit ${progReg}
-
-sleep 1
-
-rm -v ${progReg}
-
 GAMEDIR="${WINEPREFIX}/drive_c/Westwood/RA2"
 
 if [ ! -f $GAMEDIR/ra2.mix ]; then
