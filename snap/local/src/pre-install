@@ -25,8 +25,6 @@ function install_cnc() {
    fi
     # Installs the wine application
     env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${TMPDIR}/${INSTALL_EXE_CNC}" /silent
-    # Remove dlloverride reg
-    rm "${progReg}" 2>/dev/null
     # Removes the cached installers
     rm -v "${TMPDIR}/${INSTALL_EXE_CNC}" 2>/dev/null
     rm -v "${XDG_CACHE_HOME}/wine/${MONO_MSI}" 2>/dev/null
