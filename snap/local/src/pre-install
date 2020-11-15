@@ -42,8 +42,6 @@ function install_cnc() {
 
 Copy the following RA2|YR game files to $GAMEDIR then press Install:
 
- > BINKW32.dll
- > BLOWFISH.dll
  > ra2.mix
  > ra2md.mix
  > language.mix
