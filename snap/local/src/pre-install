@@ -23,6 +23,10 @@ if [ ! -f $GAMEDIR/ra2.mix ]; then
     xdg-open $GAMEDIR
 fi
 
+if [ -n "${INSTALL_URL_CNC}" ]; then
+  INSTALL_EXE_CNC=$(basename "${INSTALL_URL_CNC}")
+fi
+
     # Downloads a file with progress using wget and yad
 function install_cnc() {
     # Modify or remove this as required by your application.
