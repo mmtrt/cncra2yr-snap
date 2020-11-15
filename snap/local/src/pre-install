@@ -20,7 +20,7 @@ if [ ! -f $GAMEDIR/ra2.mix ]; then
     # create gamedir
     mkdir -p $GAMEDIR
     # open gamedir
-    /bin/xdg-open $GAMEDIR
+    xdg-open $GAMEDIR
 fi
 
 if [ -n "${INSTALL_URL_CNC}" ]; then
