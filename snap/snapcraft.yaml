@@ -19,10 +19,10 @@ plugs:
     interface: content
     target: $SNAP/wine-runtime
     default-provider: wine-platform-runtime
-  wine-5-stable:
+  wine-3-stable:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-5-stable
+    default-provider: wine-platform-3-stable
 
 environment:
   WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
