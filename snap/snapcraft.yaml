@@ -45,6 +45,18 @@ apps:
       - opengl
       - audio-playback
 
+  cncra2yrdx:
+    extensions: [ gnome-3-28 ]
+    command: bin/sommelier run-exe
+    environment:
+      RUN_EXE: "C:/Westwood/RA2/Resources/clientdx.exe"
+    plugs:
+      - home
+      - network
+      - network-bind
+      - opengl
+      - audio-playback
+
   cncra2yrogl:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
