@@ -31,6 +31,8 @@ environment:
   WINEARCH: "win64"
   INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
   TRICKS: "xna40 dotnet45"
+  NO_AT_BRIDGE: "1"
+  SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
 
 apps:
   cncra2yr:
