@@ -23,7 +23,7 @@ function install_cnc() {
       env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${TMPDIR}/${INSTALL_EXE_CNC}" /silent
       # Removes the cached installers
       rm -v "${TMPDIR}/${INSTALL_EXE_CNC}" 2>/dev/null
-      rm -v "${XDG_CACHE_HOME}/wine/${MONO_MSI}" 2>/dev/null
+      rm -v "${XDG_CACHE_HOME}/wine/*.msi" 2>/dev/null
       rm -r "${XDG_CACHE_HOME}/winetricks" 2>/dev/null
   fi
 }
