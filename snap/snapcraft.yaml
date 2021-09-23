@@ -32,7 +32,7 @@ environment:
   INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
   MONO_URL: "https://dl.winehq.org/wine/wine-mono/4.7.1/wine-mono-4.7.1.msi"
   TRICKS: "xna40 dotnet45"
-  NO_AT_BRIDGE: "1"
+  NO_AT_BRIDGE: 1
   SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
 
 apps:
