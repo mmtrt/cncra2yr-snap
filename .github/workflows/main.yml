@@ -31,4 +31,4 @@ jobs:
         with:
           store_login: ${{ secrets.STORE_LOGIN }}
           snap: ${{ steps.build.outputs.snap }}
-          release: edge,stable
+          release: edge
