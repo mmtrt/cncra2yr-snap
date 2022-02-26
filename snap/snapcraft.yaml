@@ -92,7 +92,7 @@ parts:
     override-build: |
       snapcraftctl build
       set -ex
-      mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; cp -R -p sommelier $SNAPCRAFT_PART_INSTALL
+      mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; mv pre-start sommelier/hooks ; cp -R -p sommelier $SNAPCRAFT_PART_INSTALL
     stage:
       - sommelier
 
