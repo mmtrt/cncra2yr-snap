@@ -16,11 +16,6 @@ function install_cnc() {
       rm -r "${XDG_CACHE_HOME}/{wine,winetricks}"
       ln -s "$SNAP/winedata/wine" "${XDG_CACHE_HOME}"
       ln -s "$SNAP/winedata/winetricks" "${XDG_CACHE_HOME}"
-      # Using winetricks here b/c of winedata in snap
-      for TRICK in xna40 dotnet45; do
-        "${WINETRICKS}" --unattended "${TRICK}" | \
-        yad --progress --title="Installing ${TRICK}" --progress-text= --width=400 --center --no-buttons --auto-close --auto-kill --on-top --pulsate 2&>/dev/null
-      done
       # Installs the wine application
       env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "$SNAP/winedata/${INSTALL_EXE_CNC}" /silent
   fi
