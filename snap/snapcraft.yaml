@@ -36,6 +36,10 @@ environment:
   SOMMELIER_INSTALL_MONO: 1
   SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
 
+layout:
+  /usr/share/libdrm:
+    bind: $SNAP/wine-runtime/usr/share/libdrm
+
 apps:
   cncra2yr:
     extensions: [ gnome-3-28 ]
