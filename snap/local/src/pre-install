@@ -13,18 +13,10 @@ function install_cnc() {
     # Modify or remove this as required by your application.
   if [ -n "${INSTALL_URL_CNC}" ]; then
       INSTALL_EXE_CNC=$(basename "${INSTALL_URL_CNC//\?*/}")
-    if [ ! -f "${TMPDIR}/${INSTALL_EXE_CNC}" ]; then
-      # Downloads a file with progress using wget and yad
-      wget "${INSTALL_URL_CNC}" -O "${TMPDIR}/${INSTALL_EXE_CNC}" 2>&1 | \
-      perl -p -e '$| = 1; s/^.* +([0-9]+%) +([0-9,.]+[GMKB]) +([0-9hms,.]+).*$/\1\n# Downloading... \2 (\3)/' | \
-      yad --progress --title="${INSTALL_EXE_CNC}" --width=400 --center --no-buttons --auto-close --auto-kill --on-top --no-escape 2>/dev/null
-    fi
       # Installs the wine application
-      env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${TMPDIR}/${INSTALL_EXE_CNC}" /silent
+      env WINEARCH="${WINEARCH}" WINEPREFIX="${WINEPREFIX}" "${WINELOADER}" "${SNAP}/winedata/${INSTALL_EXE_CNC}" /silent
       # Removes the cached installers
-      rm -v "${TMPDIR}/${INSTALL_EXE_CNC}" 2>/dev/null
-      rm -v "${XDG_CACHE_HOME}/wine/*.msi" 2>/dev/null
-      rm -r "${XDG_CACHE_HOME}/winetricks" 2>/dev/null
+      rm -r "${XDG_CACHE_HOME}/{wine,winetricks}"
   fi
 }
 
