@@ -19,10 +19,8 @@ distributions.</p>
 
 ## Info
  * This snap does not have game files.
- * Game updater is broken in wine though when launcher closes after update download to install it, click ok to error then run the game as usuall it will be updated because I've added workaround this issue now updates will be copied over when `Updater` dir exists.
- * Select Renderer `Automatic` from launcher options that is needed in `WINE` for smooth gameplay.
  * Auto restart of client is broken when user saves settings so don't click yes to restart do manually exit then start game again.
- * Loading savegames is broken and it is causing `wineserver ptrace` to crash game under snap strict confinement ([cncnet exception](https://pastebin.com/XLqEAAWb)).
+ * Campaign is not supported on CnCNet YR Client.
 ## Requirements
  * Original game files of `Red Alert 2 Yuri's Revenge`.
 ```
