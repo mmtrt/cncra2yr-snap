@@ -15,6 +15,10 @@ base: core22
 compression: lzo
 
 plugs:
+  gaming-mesa:
+    interface: content
+    target: $SNAP/graphics
+    default-provider: gaming-graphics-core22
   gtk-3-themes:
     interface: content
     target: $SNAP/share/themes
@@ -42,7 +46,8 @@ plugs:
     default-provider: wine-platform-7-stable-core22
 
 environment:
-  LD_LIBRARY_PATH: $SNAP/wine-runtime/usr/lib/i386-linux-gnu:$SNAP/wine-runtime/lib/i386-linux-gnu:$SNAP/wine-runtime/usr/lib/x86_64-linux-gnu:$SNAP/wine-runtime/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+  LD_LIBRARY_PATH: $SNAP/graphics/lib/i386-linux-gnu:$SNAP/graphics/usr/lib:$SNAP/wine-runtime/usr/lib/i386-linux-gnu:$SNAP/wine-runtime/lib/i386-linux-gnu:$SNAP/wine-runtime/usr/lib/x86_64-linux-gnu:$SNAP/wine-runtime/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+  LIBGL_DRIVERS_PATH: $SNAP/graphics/usr/lib/i386-linux-gnu/dri:$SNAP/graphics/usr/lib/x86_64-linux-gnu/dri:${LIBGL_DRIVERS_PATH:+:$LIBGL_DRIVERS_PATH}
   WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
   WINEPREFIX: "$SNAP_USER_COMMON/.wine"
   WINEARCH: "win64"
