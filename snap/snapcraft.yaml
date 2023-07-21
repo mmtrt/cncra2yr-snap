@@ -67,8 +67,16 @@ apps:
       - home
       - network
       - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - gsettings
       - opengl
       - audio-playback
+      - hardware-observe
+      - process-control
+      - removable-media
       - shmem
 
   cncra2yrdx:
@@ -80,8 +88,16 @@ apps:
       - home
       - network
       - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - gsettings
       - opengl
       - audio-playback
+      - hardware-observe
+      - process-control
+      - removable-media
       - shmem
 
   cncra2yrogl:
@@ -93,16 +109,34 @@ apps:
       - home
       - network
       - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - gsettings
       - opengl
       - audio-playback
+      - hardware-observe
+      - process-control
+      - removable-media
       - shmem
 
   wine:
     command-chain: [bin/desktop-launch]
     command: bin/sommelier
     plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - gsettings
+      - opengl
       - home
       - network
+      - hardware-observe
+      - process-control
+      - cups-control
+      - removable-media
       - shmem
   winetricks:
     command-chain: [bin/desktop-launch]
