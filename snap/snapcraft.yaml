@@ -52,7 +52,7 @@ environment:
   WINEPREFIX: "$SNAP_USER_COMMON/.wine"
   WINEARCH: "win64"
   INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
-  TRICKS: "xna40 dotnet45"
+  TRICKS: "xna40 dotnet45 win10"
   NO_AT_BRIDGE: 1
   DISABLE_WAYLAND: 1
   SOMMELIER_INSTALL_MONO: 1
