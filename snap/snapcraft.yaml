@@ -47,6 +47,11 @@ plugs:
     target: $SNAP/wine-platform
     default-provider: wine-platform-7-stable-core22
 
+hooks:
+  configure:
+    plugs:
+      - opengl
+
 environment:
   WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
   WINEPREFIX: "$SNAP_USER_COMMON/.wine"
