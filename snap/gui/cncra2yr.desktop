@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=C&C: Red Alert 2 Yuri's Revenge (OpenGL)
+Name=C&C: Red Alert 2 Yuri's Revenge
 Comment=
-Exec=cncra2yr.cncra2yrogl
+Exec=cncra2yr
 Icon=${SNAP}/meta/gui/cncra2yr.png
 Categories=Game;StrategyGame;
 Terminal=false

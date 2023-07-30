@@ -74,7 +74,7 @@ apps:
     command-chain: [bin/desktop-launch]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "C:/Westwood/RA2/Resources/clientxna.exe"
+      RUN_EXE: "C:/Westwood/RA2/Resources/clientogl.exe"
     plugs:
       - home
       - network
@@ -112,11 +112,11 @@ apps:
       - removable-media
       - shmem
 
-  cncra2yrogl:
+  cncra2yrxna:
     command-chain: [bin/desktop-launch]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "C:/Westwood/RA2/Resources/clientogl.exe"
+      RUN_EXE: "C:/Westwood/RA2/Resources/clientxna.exe"
     plugs:
       - home
       - network
