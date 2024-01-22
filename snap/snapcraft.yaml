@@ -71,7 +71,7 @@ parts:
     override-build: |
       craftctl default
       set -ex
-      mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; cp -R -p sommelier $CRAFT_PART_INSTALL
+      mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; mv pre-init sommelier/hooks ; cp -R -p sommelier $CRAFT_PART_INSTALL
       # Pre download required dependencies
       wget -q "https://dl.winehq.org/wine/wine-mono/8.1.0/wine-mono-8.1.0-x86.msi" -P winedata/wine
       wget -q "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe" -P winedata
@@ -89,8 +89,8 @@ parts:
   # initializes and configures Wine and installs the Windows application.
   sommelier:
     plugin: make
-    source: https://github.com/mmtrt/sommelier-core.git
-    source-branch: "core22"
+    source: https://github.com/snapcrafters/sommelier-core.git
+    source-branch: "master"
     build-packages:
       - libc6-dev-i386
       - gcc-multilib
