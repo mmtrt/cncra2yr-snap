@@ -22,10 +22,10 @@ plugs:
     interface: content
     target: $SNAP/wine-runtime
     default-provider: wine-platform-runtime-core22
-  wine-9-stable:
+  wine-9-devel:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-9-stable-core22
+    default-provider: wine-platform-9-devel-core22
 
 environment:
   WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
@@ -73,7 +73,7 @@ parts:
       set -ex
       mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; mv pre-init sommelier/hooks ; cp -R -p sommelier $CRAFT_PART_INSTALL
       # Pre download required dependencies
-      wget -q "https://dl.winehq.org/wine/wine-mono/8.1.0/wine-mono-8.1.0-x86.msi" -P winedata/wine
+      wget -q "https://dl.winehq.org/wine/wine-mono/9.3.0/wine-mono-9.3.0-x86.msi" -P winedata/wine
       wget -q "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe" -P winedata
       cp -R -p winedata $CRAFT_PART_INSTALL
     stage:
