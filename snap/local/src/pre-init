@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [[ -d "$SNAP/winedata/wine" ]]; then
+  cp -urs "$SNAP/winedata/wine" "${XDG_CACHE_HOME}"
+  cp -urs "$SNAP/winedata/winetricks" "${XDG_CACHE_HOME}"
+fi
