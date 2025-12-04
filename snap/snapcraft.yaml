@@ -28,22 +28,43 @@ plugs:
     default-provider: wine-platform-9-devel-core22
 
 environment:
-  WINEDLLOVERRIDES: "mshtml="    # Prevent pop-ups about Wine Gecko
+  WINEDLLOVERRIDES: "mscoree,mshtml="  # Prevent pop-ups about Wine Mono and Wine Gecko
   WINEPREFIX: "$SNAP_USER_COMMON/.wine"
   WINEARCH: "win32"
   INSTALL_URL_CNC: "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe"
   TRICKS: "win10"
   NO_AT_BRIDGE: 1
   DISABLE_WAYLAND: 1
+  SOMMELIER_INSTALL_MONO: 0
   SOMMELIER_NO_THEME: 1
   SYSTEM_WGETRC: $SNAP/wine-runtime/etc/wgetrc
 
 apps:
   cncra2yr:
     extensions: [gnome]
-    command: bin/sommelier run-exe
-    environment:
-      RUN_EXE: "C:/Westwood/RA2/Resources/clientogl.exe"
+    command: bin/sommelier dotnet $WINEPREFIX/drive_c/Westwood/RA2/Resources/BinariesNET8/UniversalGL/clientogl.dll
+    plugs:
+      - audio-playback
+      - home
+      - network
+      - network-bind
+      - opengl
+      - shmem
+
+  dotnet:
+    extensions: [gnome]
+    command: bin/sommelier dotnet
+    plugs:
+      - audio-playback
+      - home
+      - network
+      - network-bind
+      - opengl
+      - shmem
+
+  syringe:
+    extensions: [ gnome ]
+    command: bin/sommelier syringe
     plugs:
       - audio-playback
       - home
@@ -59,6 +80,7 @@ apps:
       - home
       - network
       - shmem
+
   winetricks:
     extensions: [gnome]
     command: bin/sommelier winetricks
@@ -74,8 +96,10 @@ parts:
       set -ex
       mkdir -p sommelier/hooks ; mv pre-install sommelier/hooks ; mv pre-init sommelier/hooks ; cp -R -p sommelier $CRAFT_PART_INSTALL
       # Pre download required dependencies
-      wget -q "https://dl.winehq.org/wine/wine-mono/9.3.0/wine-mono-9.3.0-x86.msi" -P winedata/wine
-      wget -q "https://downloads.cncnet.org/CnCNet5_YR_Installer.exe" -P winedata
+      YR_VERSION=$(wget -qO- https://github.com/CnCNet/cncnet-yr-client-package/releases/latest | grep -Eo "/yr-.*" | head -1 | sed 's|-| |' | cut -d'"' -f1 | awk '{print $2}')
+
+      wget -q "https://github.com/CnCNet/cncnet-yr-client-package/releases/download/yr-${YR_VERSION}/package_$(wget -qO- https://github.com/CnCNet/cncnet-yr-client-package/releases/expanded_assets/yr-${YR_VERSION} | grep -Eo "/package_.*.tar.gz" | cut -d'_' -f2)" -P winedata
+
       cp -R -p winedata $CRAFT_PART_INSTALL
     stage:
       - sommelier
@@ -88,7 +112,7 @@ parts:
   sommelier:
     plugin: make
     source: https://github.com/mmtrt/sommelier-core.git
-    source-branch: "core22"
+    source-branch: "yr-dotnet-core22"
     build-packages:
       - libc6-dev-i386
       - gcc-multilib
