@@ -4,3 +4,16 @@ if [[ -d "$SNAP/winedata/wine" ]]; then
   cp -urs "$SNAP/winedata/wine" "${XDG_CACHE_HOME}"
   cp -urs "$SNAP/winedata/winetricks" "${XDG_CACHE_HOME}"
 fi
+
+pkg="$SNAP/winedata/"package*.tar.gz
+
+if [ -e "$GAMEDIR/version" ] && [ -e "$pkg" ]; then
+  VERSION="$(basename "$pkg" | grep -oP '\d+\.\d+\.\d+')"
+  last="$(grep -oP '(?<=Version=).*' "$GAMEDIR/version")"
+
+  if [ "$last" != "$VERSION" ]; then
+      echo "updating to $VERSION"
+      tar -xf "$pkg" -C "$GAMEDIR"
+      chmod +x "$GAMEDIR/Resources/Compatibility/Unix/wine-game.sh"
+  fi
+fi
