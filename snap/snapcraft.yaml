@@ -8,7 +8,7 @@ description: |
  C&C: Red Alert 2 includes two different multi-player modes. One, LAN allows the player to play alongside friends and others without the use of an internet connection. The other, Online Play allows the player to play across the internet and against players from across the globe. LAN play allows for only Skirmish Mode that is available in single-player. Online play allows for tournaments, private games, public games, ladder ranking games and also contains a chat system. In 2005, control of online play for Red Alert 2 and a number of older C&C games was passed over from EA to XWIS, a community-run server.
 
 grade: stable
-confinement: strict
+confinement: devmode
 architectures:
   - build-on: amd64
 base: core22
