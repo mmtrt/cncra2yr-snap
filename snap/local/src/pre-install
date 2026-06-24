@@ -12,6 +12,7 @@ fi
 function install_cnc() {
     # Modify or remove this as required by your application.
     tar -xf $SNAP/winedata/package*.tar.gz -C "$GAMEDIR"
+    chmod +x "$GAMEDIR"/Resources/Compatibility/Unix/wine-game.sh
     dotnet "$GAMEDIR"/Resources/BinariesNET8/UniversalGL/clientogl.dll
 }
 
