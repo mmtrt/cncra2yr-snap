@@ -18,18 +18,24 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: snapcore/action-build@v1
-        id: build
+      - uses: actions/checkout@v6
 
-      - uses: snapcore/action-publish@v1
+      - name: Install snapcraft
+        run: sudo snap install --classic snapcraft
+
+      - name: Build snap
+        id: build
+        env:
+          SNAPCRAFT_BUILD_INFO: "1"
+          SNAPCRAFT_IMAGE_INFO: '{"build_url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}'
+        run: sudo snapcraft --destructive-mode
+
+      - name: Upload snap
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
-        with:
-          snap: ${{ steps.build.outputs.snap }}
-          release: edge
+        run: snapcraft upload --release=edge *.snap
